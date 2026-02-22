@@ -1,0 +1,11 @@
+Initial release of Memosly!
+
+- Markdown editor with live preview
+- Image, video, and file uploads
+- Tag system with autocomplete
+- Emoji reactions and comments
+- Search and Explore pages
+- Archive and memo management
+- Dark mode support
+- English and Chinese localization
+- Supports Memos server v0.24, v0.25, v0.26+

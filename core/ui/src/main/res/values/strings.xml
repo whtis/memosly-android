@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">Memosly</string>
+
+    <!-- Common -->
+    <string name="loading">Loading…</string>
+    <string name="retry">Retry</string>
+    <string name="back">Back</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="clear">Clear</string>
+    <string name="send">Send</string>
+    <string name="edit">Edit</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="menu">Menu</string>
+    <string name="archive">Archive</string>
+
+    <!-- Auth -->
+    <string name="restoring_session">Restoring session…</string>
+    <string name="sign_in_title">Sign in to your server</string>
+    <string name="server_url">Server URL</string>
+    <string name="server_url_placeholder">https://memos.example.com</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="all_fields_required">All fields are required</string>
+    <string name="sign_in_failed">Sign in failed</string>
+    <string name="not_authenticated">Not authenticated</string>
+    <string name="server_version">Server Version</string>
+
+    <!-- Home -->
+    <string name="new_memo">New Memo</string>
+    <string name="clear_filter">Clear filter</string>
+    <string name="show_archived">Archived</string>
+    <string name="show_normal">Normal</string>
+    <string name="unarchive">Restore</string>
+    <string name="archived_label">Archived</string>
+
+    <!-- Memo Detail -->
+    <string name="memo">Memo</string>
+    <string name="comments_count">Comments (%1$d)</string>
+    <string name="add_comment">Add a comment…</string>
+
+    <!-- Memo Editor -->
+    <string name="edit_memo">Edit Memo</string>
+    <string name="preview">Preview</string>
+    <string name="write_memo_placeholder">Write your memo here…</string>
+
+    <!-- Explore -->
+    <string name="explore">Explore</string>
+
+    <!-- Search -->
+    <string name="search">Search</string>
+    <string name="search_memos_placeholder">Search memos…</string>
+
+    <!-- Settings -->
+    <string name="settings">Settings</string>
+    <string name="language">Language</string>
+    <string name="language_system_default">System Default</string>
+    <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+    <string name="account">Account</string>
+    <string name="access_tokens">Access Tokens</string>
+    <string name="issued_at">Issued: %1$s</string>
+    <string name="webhooks">Webhooks</string>
+
+    <!-- Profile -->
+    <string name="profile">Profile</string>
+    <string name="avatar">Avatar</string>
+    <string name="statistics">Statistics</string>
+    <string name="total_memos">Total memos: %1$d</string>
+    <string name="tags_used">Tags used: %1$d</string>
+
+    <!-- Admin -->
+    <string name="admin">Admin</string>
+    <string name="instance">Instance</string>
+    <string name="version_label">Version: %1$s</string>
+    <string name="mode_label">Mode: %1$s</string>
+    <string name="identity_providers">Identity Providers</string>
+    <string name="no_identity_providers">No identity providers configured.</string>
+    <string name="type_label">Type: %1$s</string>
+
+    <!-- Tags -->
+    <string name="tags">Tags</string>
+
+    <!-- Bottom Tabs -->
+    <string name="tab_home">Home</string>
+    <string name="tab_explore">Explore</string>
+    <string name="tab_archive">Archive</string>
+    <string name="tab_me">Me</string>
+
+    <!-- Navigation Mode -->
+    <string name="nav_mode">Navigation Mode</string>
+    <string name="nav_mode_drawer">Sidebar</string>
+    <string name="nav_mode_tabs">Bottom Tabs</string>
+
+    <!-- Notifications -->
+    <string name="notifications">Notifications</string>
+    <string name="no_notifications">No notifications</string>
+    <string name="new_comment">New comment</string>
+    <string name="version_update">Version update</string>
+    <string name="notification">Notification</string>
+    <string name="from_user">From: %1$s</string>
+
+    <!-- Sidebar -->
+    <string name="sidebar_home">Home</string>
+    <string name="sidebar_archived">Archived</string>
+    <string name="sidebar_tags">Tags</string>
+    <string name="sidebar_explore">Explore</string>
+    <string name="sidebar_notifications">Notifications</string>
+    <string name="sidebar_settings">Settings</string>
+    <string name="sidebar_profile">Profile</string>
+    <string name="sidebar_admin">Admin</string>
+
+    <!-- Comments -->
+    <string name="comments">Comments</string>
+    <string name="send_comment">Send comment</string>
+    <string name="write_comment_placeholder">Write a comment…</string>
+    <string name="view_more_comments">View %1$d more comments</string>
+
+    <!-- About -->
+    <string name="about">About</string>
+    <string name="support_author">Support the Author</string>
+    <string name="support_author_desc">Star, feedback, or sponsor on GitHub</string>
+    <string name="app_version">Version %1$s</string>
+
+    <!-- Update Check -->
+    <string name="check_for_updates">Check for Updates</string>
+    <string name="current_version">Current version: %1$s</string>
+    <string name="check">Check</string>
+    <string name="checking_for_updates">Checking…</string>
+    <string name="up_to_date">Up to date</string>
+    <string name="update_available">New version available: %1$s</string>
+    <string name="download_update">Download</string>
+    <string name="update_check_failed">Failed to check for updates</string>
+
+    <!-- Failed to load -->
+    <!-- Memo Editor - Upload -->
+    <string name="uploading_media">Uploading…</string>
+    <string name="upload_failed">Upload failed</string>
+    <string name="remove_attachment">Remove</string>
+
+    <!-- Media Viewer -->
+    <string name="download">Download</string>
+    <string name="downloading">Downloading %1$s</string>
+    <string name="download_failed">Download failed</string>
+
+    <string name="failed_to_load_memo">Failed to load memo</string>
+    <string name="failed_to_load_notifications">Failed to load notifications</string>
+</resources>

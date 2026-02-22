@@ -1,0 +1,29 @@
+Memosly is a feature-rich Android client for Memos, the open-source, self-hosted memo hub. Capture your thoughts, ideas, and notes anytime, anywhere.
+
+<b>Key Features</b>
+
+- <b>Rich Markdown Editor</b> — Write with full Markdown support including GFM tables, task lists, code blocks, and inline formatting. Live preview lets you see exactly how your memo will look.
+
+- <b>Media Attachments</b> — Upload images, videos, and files directly to your memos. View images inline, play videos, and download attachments with ease.
+
+- <b>Tag System</b> — Organize your memos with hashtags. Smart autocomplete suggests existing tags as you type, and you can filter memos by tag instantly.
+
+- <b>Reactions & Comments</b> — React to memos with emoji and add comments for discussions. Perfect for shared Memos instances.
+
+- <b>Search & Explore</b> — Full-text search across all your memos. Browse public memos from the Explore page.
+
+- <b>Archive & Manage</b> — Archive memos you want to keep but hide from your main feed. Delete or restore anytime.
+
+- <b>Dark Mode</b> — Beautiful light and dark themes that follow your system settings.
+
+- <b>Multi-Language</b> — Available in English and Chinese with system language auto-detection.
+
+- <b>Flexible Navigation</b> — Choose between sidebar drawer or bottom tab navigation to suit your preference.
+
+- <b>Multi-Version Support</b> — Compatible with Memos server v0.24, v0.25, and v0.26+. Tested with v0.24.4, v0.25.3, and v0.26.1. Other minor versions should work but have not been fully tested.
+
+<b>About Memos</b>
+
+Memos (https://usememos.com) is an open-source, self-hosted memo hub focused on privacy and simplicity. Deploy your own instance and keep full control of your data.
+
+Memosly is an independent third-party client. It is not affiliated with the official Memos project.

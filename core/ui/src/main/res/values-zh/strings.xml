@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">Memosly</string>
+
+    <!-- Common -->
+    <string name="loading">加载中…</string>
+    <string name="retry">重试</string>
+    <string name="back">返回</string>
+    <string name="delete">删除</string>
+    <string name="save">保存</string>
+    <string name="clear">清除</string>
+    <string name="send">发送</string>
+    <string name="edit">编辑</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确认</string>
+    <string name="menu">菜单</string>
+    <string name="archive">归档</string>
+
+    <!-- Auth -->
+    <string name="restoring_session">正在恢复会话…</string>
+    <string name="sign_in_title">登录你的服务器</string>
+    <string name="server_url">服务器地址</string>
+    <string name="server_url_placeholder">https://memos.example.com</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="sign_in">登录</string>
+    <string name="sign_out">退出登录</string>
+    <string name="all_fields_required">所有字段为必填项</string>
+    <string name="sign_in_failed">登录失败</string>
+    <string name="not_authenticated">未登录</string>
+    <string name="server_version">服务器版本</string>
+
+    <!-- Home -->
+    <string name="new_memo">新建备忘</string>
+    <string name="clear_filter">清除筛选</string>
+    <string name="show_archived">已归档</string>
+    <string name="show_normal">正常</string>
+    <string name="unarchive">恢复</string>
+    <string name="archived_label">已归档</string>
+
+    <!-- Memo Detail -->
+    <string name="memo">备忘</string>
+    <string name="comments_count">评论 (%1$d)</string>
+    <string name="add_comment">添加评论…</string>
+
+    <!-- Memo Editor -->
+    <string name="edit_memo">编辑备忘</string>
+    <string name="preview">预览</string>
+    <string name="write_memo_placeholder">在这里写下你的备忘…</string>
+
+    <!-- Explore -->
+    <string name="explore">发现</string>
+
+    <!-- Search -->
+    <string name="search">搜索</string>
+    <string name="search_memos_placeholder">搜索备忘…</string>
+
+    <!-- Settings -->
+    <string name="settings">设置</string>
+    <string name="language">语言</string>
+    <string name="language_system_default">跟随系统</string>
+    <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
+    <string name="account">账户</string>
+    <string name="access_tokens">访问令牌</string>
+    <string name="issued_at">签发时间：%1$s</string>
+    <string name="webhooks">Webhooks</string>
+
+    <!-- Profile -->
+    <string name="profile">个人资料</string>
+    <string name="avatar">头像</string>
+    <string name="statistics">统计</string>
+    <string name="total_memos">备忘总数：%1$d</string>
+    <string name="tags_used">标签数量：%1$d</string>
+
+    <!-- Admin -->
+    <string name="admin">管理</string>
+    <string name="instance">实例</string>
+    <string name="version_label">版本：%1$s</string>
+    <string name="mode_label">模式：%1$s</string>
+    <string name="identity_providers">身份提供商</string>
+    <string name="no_identity_providers">未配置身份提供商。</string>
+    <string name="type_label">类型：%1$s</string>
+
+    <!-- Tags -->
+    <string name="tags">标签</string>
+
+    <!-- Bottom Tabs -->
+    <string name="tab_home">首页</string>
+    <string name="tab_explore">发现</string>
+    <string name="tab_archive">归档</string>
+    <string name="tab_me">我</string>
+
+    <!-- Navigation Mode -->
+    <string name="nav_mode">导航模式</string>
+    <string name="nav_mode_drawer">侧边栏</string>
+    <string name="nav_mode_tabs">底部标签栏</string>
+
+    <!-- Notifications -->
+    <string name="notifications">通知</string>
+    <string name="no_notifications">暂无通知</string>
+    <string name="new_comment">新评论</string>
+    <string name="version_update">版本更新</string>
+    <string name="notification">通知</string>
+    <string name="from_user">来自：%1$s</string>
+
+    <!-- Sidebar -->
+    <string name="sidebar_home">首页</string>
+    <string name="sidebar_archived">已归档</string>
+    <string name="sidebar_tags">标签</string>
+    <string name="sidebar_explore">发现</string>
+    <string name="sidebar_notifications">通知</string>
+    <string name="sidebar_settings">设置</string>
+    <string name="sidebar_profile">个人资料</string>
+    <string name="sidebar_admin">管理</string>
+
+    <!-- Comments -->
+    <string name="comments">评论</string>
+    <string name="send_comment">发送评论</string>
+    <string name="write_comment_placeholder">写一条评论…</string>
+    <string name="view_more_comments">查看更多 %1$d 条评论</string>
+
+    <!-- About -->
+    <string name="about">关于</string>
+    <string name="support_author">支持作者</string>
+    <string name="support_author_desc">去 GitHub 点星、反馈或赞助</string>
+    <string name="app_version">版本 %1$s</string>
+
+    <!-- Update Check -->
+    <string name="check_for_updates">检查更新</string>
+    <string name="current_version">当前版本：%1$s</string>
+    <string name="check">检查</string>
+    <string name="checking_for_updates">检查中…</string>
+    <string name="up_to_date">已是最新版本</string>
+    <string name="update_available">发现新版本：%1$s</string>
+    <string name="download_update">前往下载</string>
+    <string name="update_check_failed">检查更新失败</string>
+
+    <!-- Memo Editor - Upload -->
+    <string name="uploading_media">上传中…</string>
+    <string name="upload_failed">上传失败</string>
+    <string name="remove_attachment">移除</string>
+
+    <!-- Media Viewer -->
+    <string name="download">下载</string>
+    <string name="downloading">正在下载 %1$s</string>
+    <string name="download_failed">下载失败</string>
+
+    <!-- Failed to load -->
+    <string name="failed_to_load_memo">加载备忘失败</string>
+    <string name="failed_to_load_notifications">加载通知失败</string>
+</resources>
