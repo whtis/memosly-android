@@ -9,11 +9,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/whtis/memosly-android/releases/latest">
-    <img src="https://img.shields.io/github/v/release/whtis/memosly-android?style=flat-square" alt="Latest Release" />
-  </a>
-  <a href="https://github.com/whtis/memosly-android/releases">
-    <img src="https://img.shields.io/github/downloads/whtis/memosly-android/total?style=flat-square" alt="Downloads" />
+  <a href="https://play.google.com/store/apps/details?id=com.whtis.memosly">
+    <img src="https://img.shields.io/badge/Google_Play-Download-green?style=flat-square&logo=google-play" alt="Google Play" />
   </a>
 </p>
 
@@ -73,7 +70,9 @@
 
 ## Download
 
-Download the latest APK from [GitHub Releases](https://github.com/whtis/memosly-android/releases/latest).
+<a href="https://play.google.com/store/apps/details?id=com.whtis.memosly">
+  <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" width="200" alt="Get it on Google Play" />
+</a>
 
 > Requires Android 8.0 (API 26) or above.
 
