@@ -131,6 +131,35 @@ class AuthRepositoryImpl @Inject constructor(
         return null
     }
 
+    override suspend fun signInWithAccessToken(
+        serverUrl: String,
+        accessToken: String,
+        version: ServerVersion,
+    ): User {
+        tokenManager.setServerUrl(serverUrl)
+        tokenManager.setServerVersion(version)
+        sessionPreferences.serverVersion = version.name
+
+        // Strip "Bearer " prefix if user pasted it
+        val cleanToken = accessToken.trim().removePrefix("Bearer ").trim()
+        tokenManager.setAccessToken(cleanToken)
+
+        try {
+            val user = getCurrentUser()
+            // Token is valid — persist everything
+            sessionPreferences.serverUrl = serverUrl
+            sessionPreferences.accessToken = cleanToken
+            sessionPreferences.userId = user.id
+            _currentUser.value = user
+            _isAuthenticated.value = true
+            return user
+        } catch (e: Exception) {
+            // Token validation failed — clean up
+            tokenManager.clear()
+            throw Exception("Access token validation failed: ${e.message}")
+        }
+    }
+
     override suspend fun signOut() {
         try {
             when (tokenManager.serverVersion.value) {

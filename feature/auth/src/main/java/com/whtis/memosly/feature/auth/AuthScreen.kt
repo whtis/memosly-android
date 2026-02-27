@@ -77,6 +77,7 @@ internal fun AuthScreen(
     }
 
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
+    var tokenVisible by rememberSaveable { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -128,6 +129,30 @@ internal fun AuthScreen(
                     modifier = Modifier.padding(20.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
+                    // Login mode selector
+                    SingleChoiceSegmentedButtonRow(
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        LoginMode.entries.forEachIndexed { index, mode ->
+                            SegmentedButton(
+                                selected = uiState.loginMode == mode,
+                                onClick = { viewModel.setLoginMode(mode) },
+                                shape = SegmentedButtonDefaults.itemShape(
+                                    index = index,
+                                    count = LoginMode.entries.size,
+                                ),
+                            ) {
+                                Text(
+                                    when (mode) {
+                                        LoginMode.PASSWORD -> stringResource(UiR.string.password)
+                                        LoginMode.ACCESS_TOKEN -> stringResource(UiR.string.access_token_label)
+                                    },
+                                    style = MaterialTheme.typography.labelSmall,
+                                )
+                            }
+                        }
+                    }
+
                     OutlinedTextField(
                         value = uiState.serverUrl,
                         onValueChange = viewModel::updateServerUrl,
@@ -167,39 +192,65 @@ internal fun AuthScreen(
                         ),
                     )
 
-                    OutlinedTextField(
-                        value = uiState.username,
-                        onValueChange = viewModel::updateUsername,
-                        label = { Text(stringResource(UiR.string.username)) },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        shape = MemosShapes.Input,
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                    )
+                    if (uiState.loginMode == LoginMode.PASSWORD) {
+                        OutlinedTextField(
+                            value = uiState.username,
+                            onValueChange = viewModel::updateUsername,
+                            label = { Text(stringResource(UiR.string.username)) },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true,
+                            shape = MemosShapes.Input,
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        )
 
-                    OutlinedTextField(
-                        value = uiState.password,
-                        onValueChange = viewModel::updatePassword,
-                        label = { Text(stringResource(UiR.string.password)) },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        shape = MemosShapes.Input,
-                        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        trailingIcon = {
-                            IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                                Icon(
-                                    imageVector = if (passwordVisible) Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility,
-                                    contentDescription = if (passwordVisible) "Hide password" else "Show password",
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                )
-                            }
-                        },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Password,
-                            imeAction = ImeAction.Done,
-                        ),
-                        keyboardActions = KeyboardActions(onDone = { viewModel.signIn() }),
-                    )
+                        OutlinedTextField(
+                            value = uiState.password,
+                            onValueChange = viewModel::updatePassword,
+                            label = { Text(stringResource(UiR.string.password)) },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true,
+                            shape = MemosShapes.Input,
+                            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                            trailingIcon = {
+                                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                                    Icon(
+                                        imageVector = if (passwordVisible) Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility,
+                                        contentDescription = if (passwordVisible) "Hide password" else "Show password",
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    )
+                                }
+                            },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Password,
+                                imeAction = ImeAction.Done,
+                            ),
+                            keyboardActions = KeyboardActions(onDone = { viewModel.signIn() }),
+                        )
+                    } else {
+                        OutlinedTextField(
+                            value = uiState.accessToken,
+                            onValueChange = viewModel::updateAccessToken,
+                            label = { Text(stringResource(UiR.string.access_token_label)) },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true,
+                            shape = MemosShapes.Input,
+                            visualTransformation = if (tokenVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                            trailingIcon = {
+                                IconButton(onClick = { tokenVisible = !tokenVisible }) {
+                                    Icon(
+                                        imageVector = if (tokenVisible) Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility,
+                                        contentDescription = if (tokenVisible) "Hide token" else "Show token",
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    )
+                                }
+                            },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Password,
+                                imeAction = ImeAction.Done,
+                            ),
+                            keyboardActions = KeyboardActions(onDone = { viewModel.signIn() }),
+                        )
+                    }
                 }
             }
 

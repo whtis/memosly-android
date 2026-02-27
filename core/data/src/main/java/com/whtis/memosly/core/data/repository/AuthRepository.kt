@@ -9,6 +9,7 @@ interface AuthRepository {
     val currentUser: StateFlow<User?>
     val serverUrl: String?
     suspend fun signIn(serverUrl: String, username: String, password: String, version: ServerVersion): User
+    suspend fun signInWithAccessToken(serverUrl: String, accessToken: String, version: ServerVersion): User
     suspend fun signOut()
     suspend fun restoreSession(): Boolean
     suspend fun getCurrentUser(): User

@@ -13,10 +13,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+enum class LoginMode { PASSWORD, ACCESS_TOKEN }
+
 data class AuthUiState(
     val serverUrl: String = "",
     val username: String = "",
     val password: String = "",
+    val accessToken: String = "",
+    val loginMode: LoginMode = LoginMode.PASSWORD,
     val serverVersion: ServerVersion = ServerVersion.V026,
     val isLoading: Boolean = false,
     val error: String? = null,
@@ -74,8 +78,23 @@ class AuthViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(serverVersion = version, error = null)
     }
 
+    fun updateAccessToken(token: String) {
+        _uiState.value = _uiState.value.copy(accessToken = token, error = null)
+    }
+
+    fun setLoginMode(mode: LoginMode) {
+        _uiState.value = _uiState.value.copy(loginMode = mode, error = null)
+    }
+
     fun signIn() {
         val state = _uiState.value
+        when (state.loginMode) {
+            LoginMode.PASSWORD -> signInWithPassword(state)
+            LoginMode.ACCESS_TOKEN -> signInWithAccessToken(state)
+        }
+    }
+
+    private fun signInWithPassword(state: AuthUiState) {
         if (state.serverUrl.isBlank() || state.username.isBlank() || state.password.isBlank()) {
             _uiState.value = state.copy(error = "All fields are required")
             return
@@ -91,13 +110,7 @@ class AuthViewModel @Inject constructor(
                     version = state.serverVersion,
                 )
                 _uiState.value = _uiState.value.copy(isLoading = false)
-                val host = try {
-                    java.net.URI(state.serverUrl).host ?: state.serverUrl
-                } catch (_: Exception) { state.serverUrl }
-                analyticsHelper.logEvent("login_success", mapOf(
-                    "server_host" to host,
-                    "server_version" to state.serverVersion.name,
-                ))
+                logLoginSuccess(state, "password")
                 onLoginSuccessCallback?.invoke()
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
@@ -106,5 +119,42 @@ class AuthViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private fun signInWithAccessToken(state: AuthUiState) {
+        if (state.serverUrl.isBlank() || state.accessToken.isBlank()) {
+            _uiState.value = state.copy(error = "Server URL and access token are required")
+            return
+        }
+
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+            try {
+                authRepository.signInWithAccessToken(
+                    serverUrl = state.serverUrl.trimEnd('/'),
+                    accessToken = state.accessToken,
+                    version = state.serverVersion,
+                )
+                _uiState.value = _uiState.value.copy(isLoading = false)
+                logLoginSuccess(state, "access_token")
+                onLoginSuccessCallback?.invoke()
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = e.message ?: "Token validation failed",
+                )
+            }
+        }
+    }
+
+    private fun logLoginSuccess(state: AuthUiState, method: String) {
+        val host = try {
+            java.net.URI(state.serverUrl).host ?: state.serverUrl
+        } catch (_: Exception) { state.serverUrl }
+        analyticsHelper.logEvent("login_success", mapOf(
+            "server_host" to host,
+            "server_version" to state.serverVersion.name,
+            "login_method" to method,
+        ))
     }
 }

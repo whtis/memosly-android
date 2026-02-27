@@ -28,6 +28,9 @@
     <string name="sign_out">Sign Out</string>
     <string name="all_fields_required">All fields are required</string>
     <string name="sign_in_failed">Sign in failed</string>
+    <string name="access_token_label">Access Token</string>
+    <string name="use_access_token">Use Access Token</string>
+    <string name="use_password">Use Password</string>
     <string name="not_authenticated">Not authenticated</string>
     <string name="server_version">Server Version</string>
 
