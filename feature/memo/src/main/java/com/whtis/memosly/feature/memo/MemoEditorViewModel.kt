@@ -12,6 +12,8 @@ import com.whtis.memosly.core.data.repository.ResourceRepository
 import com.whtis.memosly.core.data.repository.TagRepository
 import com.whtis.memosly.core.model.Resource
 import com.whtis.memosly.core.model.Visibility
+import com.whtis.memosly.core.model.isImage
+import com.whtis.memosly.core.network.ServerVersion
 import com.whtis.memosly.core.network.TokenManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -212,14 +214,25 @@ class MemoEditorViewModel @Inject constructor(
                     }
                 }
 
-                // Link resources to the memo via SetMemoResources/SetMemoAttachments
+                // Link resources to the memo via SetMemoResources/SetMemoAttachments.
+                // v0.25+ uses the attachments endpoint and renders linked images as
+                // separate attachment entries in addition to the inline ![](url)
+                // embed in markdown content — i.e. the same image shows up twice on
+                // web. Skip newly-uploaded images here; they're already in the
+                // markdown content. (issue #5)
                 val pendingResources = _uiState.value.pendingResources
                 val existingResources = _uiState.value.existingResources
-                if (pendingResources.isNotEmpty() || (memoId.isNotBlank() && existingResources.size != memo.resources.size)) {
+                val isV025Plus = tokenManager.serverVersion.value != ServerVersion.V024
+                val pendingForAttach = if (isV025Plus) {
+                    pendingResources.filterNot { it.isImage() }
+                } else {
+                    pendingResources
+                }
+                val existingChanged = memoId.isNotBlank() && existingResources.size != memo.resources.size
+                if (pendingForAttach.isNotEmpty() || existingChanged) {
                     try {
-                        // Combine existing (possibly trimmed by removals) + newly uploaded
                         val existingNames = existingResources.map { it.name }
-                        val newNames = pendingResources.map { it.name }
+                        val newNames = pendingForAttach.map { it.name }
                         val allNames = (existingNames + newNames).distinct()
                         memoRepository.setMemoResources(memo.name, allNames)
                     } catch (e: Exception) {
