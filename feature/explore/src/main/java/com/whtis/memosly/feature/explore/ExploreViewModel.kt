@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.whtis.memosly.core.common.AnalyticsHelper
+import com.whtis.memosly.core.common.escapeCelStringLiteral
 import com.whtis.memosly.core.data.repository.AuthRepository
 import com.whtis.memosly.core.data.repository.MemoRepository
 import com.whtis.memosly.core.data.repository.UserRepository
@@ -74,7 +75,7 @@ class ExploreViewModel @Inject constructor(
         .flatMapLatest { query ->
             val parts = mutableListOf("visibility in [\"PUBLIC\", \"PROTECTED\"]")
             if (query.isNotBlank()) {
-                parts.add("content.contains(\"$query\")")
+                parts.add("content.contains(\"${query.escapeCelStringLiteral()}\")")
             }
             memoRepository.getMemosPaged(parts.joinToString(" && "))
         }

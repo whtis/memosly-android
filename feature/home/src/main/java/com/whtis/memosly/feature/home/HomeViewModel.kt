@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.whtis.memosly.core.common.escapeCelStringLiteral
 import com.whtis.memosly.core.data.repository.AuthRepository
 import com.whtis.memosly.core.data.repository.MemoRepository
 import com.whtis.memosly.core.data.repository.UserRepository
@@ -272,7 +273,7 @@ class HomeViewModel @Inject constructor(
         userId?.let { parts.add("creator_id == $it") }
         tagFilter?.let { parts.add(it) }
         if (searchQuery.isNotBlank()) {
-            parts.add("content.contains(\"$searchQuery\")")
+            parts.add("content.contains(\"${searchQuery.escapeCelStringLiteral()}\")")
         }
         return if (parts.isEmpty()) null else parts.joinToString(" && ")
     }

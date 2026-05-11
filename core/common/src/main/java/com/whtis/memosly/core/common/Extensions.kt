@@ -26,3 +26,14 @@ fun String.extractTags(): List<String> {
     val regex = Regex("""(?:^|\s)#([a-zA-Z0-9_/\-]+)""")
     return regex.findAll(this).map { it.groupValues[1] }.distinct().toList()
 }
+
+/**
+ * Escapes a string for safe embedding inside a CEL double-quoted string literal.
+ *
+ * Memos' ListMemos filter parameter is CEL — interpolating raw user input lets a
+ * stray `"` or `\` produce malformed expressions, so the server rejects the request
+ * and search silently returns nothing. Only `\` and `"` need escaping for the
+ * double-quoted form we use.
+ */
+fun String.escapeCelStringLiteral(): String =
+    replace("\\", "\\\\").replace("\"", "\\\"")
