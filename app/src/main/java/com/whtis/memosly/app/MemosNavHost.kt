@@ -2,13 +2,16 @@ package com.whtis.memosly.app
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.first
 import com.whtis.memosly.core.network.SessionPreferences
 import com.whtis.memosly.core.ui.component.SidebarDestination
 import com.whtis.memosly.feature.auth.AUTH_ROUTE
@@ -31,7 +34,10 @@ import com.whtis.memosly.feature.explore.navigateToExplore
 private const val MAIN_TABS_ROUTE = "main_tabs"
 
 @Composable
-fun MemosNavHost(sessionPreferences: SessionPreferences) {
+fun MemosNavHost(
+    sessionPreferences: SessionPreferences,
+    sharedTextState: MutableState<String?> = mutableStateOf(null),
+) {
     val navController = rememberNavController()
     val navMode by sessionPreferences.navModeFlow.collectAsStateWithLifecycle()
 
@@ -53,6 +59,18 @@ fun MemosNavHost(sessionPreferences: SessionPreferences) {
                     }
                 }
             }
+    }
+
+    // Consume shared text once the user is past auth, then clear it so it doesn't fire again
+    // on configuration changes or recompositions.
+    val pendingSharedText = sharedTextState.value
+    LaunchedEffect(pendingSharedText) {
+        if (pendingSharedText.isNullOrEmpty()) return@LaunchedEffect
+        navController.currentBackStackEntryFlow.first { entry ->
+            entry.destination.route != AUTH_ROUTE
+        }
+        navController.navigateToMemoEditor(sharedText = pendingSharedText)
+        sharedTextState.value = null
     }
 
     NavHost(

@@ -55,8 +55,20 @@ class MemoEditorViewModel @Inject constructor(
     val serverUrl: String get() = tokenManager.serverUrl.value ?: ""
 
     private val memoId: String = savedStateHandle["memoId"] ?: ""
+    private val sharedText: String = savedStateHandle["sharedText"] ?: ""
 
-    private val _uiState = MutableStateFlow(MemoEditorUiState(isEditMode = memoId.isNotBlank()))
+    private val initialField: TextFieldValue = if (sharedText.isNotEmpty() && memoId.isBlank()) {
+        TextFieldValue(text = sharedText, selection = TextRange(sharedText.length))
+    } else {
+        TextFieldValue()
+    }
+
+    private val _uiState = MutableStateFlow(
+        MemoEditorUiState(
+            isEditMode = memoId.isNotBlank(),
+            textFieldValue = initialField,
+        ),
+    )
     val uiState: StateFlow<MemoEditorUiState> = _uiState.asStateFlow()
 
     private var allTags: List<String> = emptyList()
