@@ -47,6 +47,8 @@
 ### Server Compatibility
 - Compatible with Memos server **v0.24**, **v0.25**, and **v0.26**
 - Version-aware API handling — select your server version at login
+- Sign in with username/password **or** a Personal Access Token (works for
+  OIDC/SSO users — generate a PAT from the Memos web UI)
 
 ### Profile & Settings
 - User stats (memo count, tag count)
@@ -101,6 +103,10 @@ If you find this app useful, consider supporting the development:
 
 - [Privacy Policy](PRIVACY_POLICY.md)
 - [Data Deletion Instructions](DATA_DELETION.md)
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for release history.
 
 ## License
 
