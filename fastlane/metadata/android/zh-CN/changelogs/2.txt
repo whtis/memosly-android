@@ -1,0 +1,4 @@
+v1.0.1 — 维护版本。
+
+- 修复 GitHub Release 工作流，APK 现在可以正常发布。
+- 加固 CI 签名配置，避免 keystore.properties 中的变量被 shell 展开。

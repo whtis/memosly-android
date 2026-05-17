@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
-  "release_notes": "Initial release",
-  "release_notes_zh": "初始版本"
+  "version": "1.1.0",
+  "release_notes": "• Sign in with a Personal Access Token (PAT) — useful for OIDC/SSO users who don't have a username/password.\n• Login screen now has a Password / Access Token toggle.\n• Pasted tokens with a leading 'Bearer ' prefix are stripped automatically.",
+  "release_notes_zh": "• 支持使用个人访问令牌（PAT）登录 —— 方便没有用户名/密码的 OIDC/SSO 用户。\n• 登录页新增 密码 / 访问令牌 切换。\n• 粘贴的令牌如带有 'Bearer ' 前缀会被自动去除。"
 }

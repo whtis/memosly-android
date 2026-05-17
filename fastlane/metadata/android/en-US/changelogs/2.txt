@@ -1,0 +1,4 @@
+v1.0.1 — Maintenance release.
+
+- Fixed GitHub Release workflow so APKs can be published.
+- Hardened CI signing config to avoid shell variable expansion in keystore properties.
