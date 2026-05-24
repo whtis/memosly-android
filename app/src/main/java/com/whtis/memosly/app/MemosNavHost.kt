@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.first
 import com.whtis.memosly.core.network.SessionPreferences
 import com.whtis.memosly.core.ui.component.SidebarDestination
 import com.whtis.memosly.feature.auth.AUTH_ROUTE
@@ -31,7 +32,11 @@ import com.whtis.memosly.feature.explore.navigateToExplore
 private const val MAIN_TABS_ROUTE = "main_tabs"
 
 @Composable
-fun MemosNavHost(sessionPreferences: SessionPreferences) {
+fun MemosNavHost(
+    sessionPreferences: SessionPreferences,
+    sharedText: String? = null,
+    onSharedTextConsumed: () -> Unit = {},
+) {
     val navController = rememberNavController()
     val navMode by sessionPreferences.navModeFlow.collectAsStateWithLifecycle()
 
@@ -53,6 +58,16 @@ fun MemosNavHost(sessionPreferences: SessionPreferences) {
                     }
                 }
             }
+    }
+
+    // Open editor with shared text when share intent arrives after auth
+    LaunchedEffect(sharedText) {
+        val text = sharedText ?: return@LaunchedEffect
+        if (text.isBlank()) return@LaunchedEffect
+        snapshotFlow { navController.currentBackStackEntry?.destination?.route }
+            .first { it != null && it != AUTH_ROUTE }
+        navController.navigateToMemoEditor(sharedText = text)
+        onSharedTextConsumed()
     }
 
     NavHost(
