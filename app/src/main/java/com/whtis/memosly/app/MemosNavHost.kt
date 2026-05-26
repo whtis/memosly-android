@@ -2,7 +2,9 @@ package com.whtis.memosly.app
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
@@ -34,8 +36,12 @@ private const val MAIN_TABS_ROUTE = "main_tabs"
 @Composable
 fun MemosNavHost(
     sessionPreferences: SessionPreferences,
+<<<<<<< HEAD
     sharedText: String? = null,
     onSharedTextConsumed: () -> Unit = {},
+=======
+    sharedTextState: MutableState<String?> = mutableStateOf(null),
+>>>>>>> origin/night-shift/20260514-share-intent
 ) {
     val navController = rememberNavController()
     val navMode by sessionPreferences.navModeFlow.collectAsStateWithLifecycle()
@@ -60,6 +66,7 @@ fun MemosNavHost(
             }
     }
 
+<<<<<<< HEAD
     // Open editor with shared text when share intent arrives after auth
     LaunchedEffect(sharedText) {
         val text = sharedText ?: return@LaunchedEffect
@@ -68,6 +75,18 @@ fun MemosNavHost(
             .first { it != null && it != AUTH_ROUTE }
         navController.navigateToMemoEditor(sharedText = text)
         onSharedTextConsumed()
+=======
+    // Consume shared text once the user is past auth, then clear it so it doesn't fire again
+    // on configuration changes or recompositions.
+    val pendingSharedText = sharedTextState.value
+    LaunchedEffect(pendingSharedText) {
+        if (pendingSharedText.isNullOrEmpty()) return@LaunchedEffect
+        navController.currentBackStackEntryFlow.first { entry ->
+            entry.destination.route != AUTH_ROUTE
+        }
+        navController.navigateToMemoEditor(sharedText = pendingSharedText)
+        sharedTextState.value = null
+>>>>>>> origin/night-shift/20260514-share-intent
     }
 
     NavHost(
