@@ -1,6 +1,7 @@
 package com.whtis.memosly.core.network.di
 
 import com.whtis.memosly.core.network.AuthInterceptor
+import com.whtis.memosly.core.network.PLACEHOLDER_HOST
 import com.whtis.memosly.core.network.ServerUrlInterceptor
 import com.whtis.memosly.core.network.api.*
 import com.whtis.memosly.core.network.dto.MemoRelationAdapter
@@ -52,7 +53,7 @@ object NetworkModule {
         okHttpClient: OkHttpClient,
         moshi: Moshi,
     ): Retrofit = Retrofit.Builder()
-        .baseUrl("https://placeholder.example.com/")
+        .baseUrl("https://$PLACEHOLDER_HOST/")
         .client(okHttpClient)
         .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
         .build()

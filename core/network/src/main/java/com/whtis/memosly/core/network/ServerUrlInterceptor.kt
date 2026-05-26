@@ -6,7 +6,12 @@ import okhttp3.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 
+<<<<<<< HEAD
 internal const val PLACEHOLDER_HOST = "placeholder.example.com"
+=======
+/** Retrofit base URL host. ServerUrlInterceptor rewrites only requests to this host. */
+const val PLACEHOLDER_HOST = "placeholder.example.com"
+>>>>>>> origin/night-shift/20260504-s3-image-loading
 
 @Singleton
 class ServerUrlInterceptor @Inject constructor(
@@ -15,9 +20,14 @@ class ServerUrlInterceptor @Inject constructor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
 
+<<<<<<< HEAD
         // Only rewrite the Retrofit placeholder host. Coil image requests
         // already carry a real URL (memos server, or an external host like S3
         // when the server uses S3 storage) and must pass through untouched.
+=======
+        // Only rewrite Retrofit-generated requests. External URLs (e.g. S3-stored
+        // images loaded via Coil on the same OkHttp client) must pass through.
+>>>>>>> origin/night-shift/20260504-s3-image-loading
         if (originalRequest.url.host != PLACEHOLDER_HOST) {
             return chain.proceed(originalRequest)
         }
