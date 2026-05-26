@@ -1,0 +1,5 @@
+v1.1.0 — Access token login.
+
+- Sign in with a Personal Access Token (PAT) as an alternative to username and password. OIDC/SSO users can generate a PAT from the Memos web UI and use it to authenticate in the app.
+- Login screen now has a Password / Access Token toggle (segmented buttons).
+- Pasted tokens with a leading "Bearer " prefix are stripped automatically.
