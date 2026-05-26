@@ -283,7 +283,6 @@ class MemoEditorViewModel @Inject constructor(
                 val resource = resourceRepository.uploadResource(filename, mimeType, bytes)
                 val encodedFilename = java.net.URLEncoder.encode(resource.filename, "UTF-8").replace("+", "%20")
                 val resourcePath = "/file/${resource.name}/$encodedFilename"
-                val isImage = mimeType.startsWith("image/")
 
                 val attachment = UploadedAttachment(
                     url = resourcePath,
@@ -292,18 +291,16 @@ class MemoEditorViewModel @Inject constructor(
                 )
                 val newPending = _uiState.value.pendingResources + resource
 
+                val isImage = mimeType.startsWith("image/")
                 val isVideo = mimeType.startsWith("video/")
-                // Images: embed as ![name](url) for inline rendering on both web and Android
-                // Videos: do NOT embed in markdown — web renders ![](video) as broken <img>
-                //   Instead, videos are linked via SetMemoResources API and displayed
-                //   through the attachment system on both platforms
-                // Other files: embed as [name](url) link
-                if (!isVideo) {
-                    val markdown = if (isImage) {
-                        "\n\n![${resource.filename}]($resourcePath)\n"
-                    } else {
-                        "\n\n[${resource.filename}]($resourcePath)\n"
-                    }
+                // Images and videos are linked only via SetMemoResources/SetMemoAttachments —
+                // never embedded as markdown. Embedding image markdown caused duplicate
+                // display on the web client (issue #5): once inline from ![](url) and again
+                // from the attachment list. Both platforms render attached resources via the
+                // attachment system, so a single source-of-truth avoids duplication.
+                // Other files: embed as [name](url) link so users can reference them inline.
+                if (!isImage && !isVideo) {
+                    val markdown = "\n\n[${resource.filename}]($resourcePath)\n"
                     val current = _uiState.value.textFieldValue
                     val cursorPos = current.selection.start
                     val newText = buildString {
@@ -319,8 +316,6 @@ class MemoEditorViewModel @Inject constructor(
                         pendingResources = newPending,
                     )
                 } else {
-                    // Video: only track in attachments (shown in preview strip) and
-                    // pendingResources (linked to memo on save via API)
                     _uiState.value = _uiState.value.copy(
                         isUploading = false,
                         attachments = _uiState.value.attachments + attachment,
