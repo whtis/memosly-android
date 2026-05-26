@@ -1,9 +1,12 @@
 package com.whtis.memosly.core.network
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import okhttp3.HttpUrl
 =======
 >>>>>>> origin/night-shift/20260504-s3-image-loading
+=======
+>>>>>>> origin/night-shift/20260510-auth-only-memos-host
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -18,6 +21,7 @@ class AuthInterceptor @Inject constructor(
         val request = chain.request()
 <<<<<<< HEAD
         val token = tokenManager.accessToken.value
+<<<<<<< HEAD
             ?: return chain.proceed(request)
 
         // Only attach credentials for requests bound to the memos server (or
@@ -39,6 +43,13 @@ class AuthInterceptor @Inject constructor(
             return chain.proceed(request)
         }
 
+=======
+        if (token == null || !isMemosServerRequest(request.url.host)) {
+            // Skip auth for external URLs (e.g. S3 externalLink images loaded by Coil) —
+            // sending Bearer/Cookie to S3 makes it reject the request as malformed auth.
+            return chain.proceed(request)
+        }
+>>>>>>> origin/night-shift/20260510-auth-only-memos-host
         val builder = request.newBuilder()
         when (tokenManager.serverVersion.value) {
             // v0.25 uses session-based auth via Cookie header
@@ -47,6 +58,7 @@ class AuthInterceptor @Inject constructor(
             else -> builder.header("Authorization", "Bearer $token")
         }
         return chain.proceed(builder.build())
+<<<<<<< HEAD
 <<<<<<< HEAD
     }
 
@@ -59,5 +71,12 @@ class AuthInterceptor @Inject constructor(
         return url.host.equals(configuredHost, ignoreCase = true)
 =======
 >>>>>>> origin/night-shift/20260504-s3-image-loading
+=======
+    }
+
+    private fun isMemosServerRequest(requestHost: String): Boolean {
+        val configured = tokenManager.serverUrl.value?.toHttpUrlOrNull()?.host ?: return false
+        return requestHost.equals(configured, ignoreCase = true)
+>>>>>>> origin/night-shift/20260510-auth-only-memos-host
     }
 }
