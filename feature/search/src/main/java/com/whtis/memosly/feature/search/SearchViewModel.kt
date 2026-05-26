@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.whtis.memosly.core.common.AnalyticsHelper
+import com.whtis.memosly.core.common.escapeCelStringLiteral
 import com.whtis.memosly.core.data.repository.MemoRepository
 import com.whtis.memosly.core.data.repository.TagRepository
 import com.whtis.memosly.core.model.Memo
@@ -42,7 +43,7 @@ class SearchViewModel @Inject constructor(
         .distinctUntilChanged()
         .flatMapLatest { query ->
             if (query.isBlank()) flowOf(PagingData.empty())
-            else memoRepository.getMemosPaged("content.contains(\"$query\")")
+            else memoRepository.getMemosPaged("content.contains(\"${query.escapeCelStringLiteral()}\")")
         }
         .cachedIn(viewModelScope)
 
