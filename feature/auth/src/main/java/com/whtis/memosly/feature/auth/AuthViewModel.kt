@@ -47,17 +47,39 @@ class AuthViewModel @Inject constructor(
     }
 
     private var onLoginSuccessCallback: (() -> Unit)? = null
+    // True after restoreSession (or signIn) succeeds but no callback was registered
+    // yet. AuthScreen calls setLoginSuccessCallback later; if a success already
+    // happened, fire it immediately so the navigator doesn't get stuck on AUTH_ROUTE.
+    private var pendingLoginSuccess = false
 
     fun setLoginSuccessCallback(callback: () -> Unit) {
         onLoginSuccessCallback = callback
+        if (pendingLoginSuccess) {
+            pendingLoginSuccess = false
+            callback()
+        }
+    }
+
+    private fun fireLoginSuccess() {
+        val callback = onLoginSuccessCallback
+        if (callback != null) {
+            callback()
+        } else {
+            pendingLoginSuccess = true
+        }
     }
 
     private fun restoreSession() {
         viewModelScope.launch {
-            val restored = authRepository.restoreSession()
+            val restored = try {
+                authRepository.restoreSession()
+            } catch (_: Exception) {
+                _uiState.value = _uiState.value.copy(isRestoringSession = false)
+                return@launch
+            }
             _uiState.value = _uiState.value.copy(isRestoringSession = false)
             if (restored) {
-                onLoginSuccessCallback?.invoke()
+                fireLoginSuccess()
             }
         }
     }
@@ -111,7 +133,7 @@ class AuthViewModel @Inject constructor(
                 )
                 _uiState.value = _uiState.value.copy(isLoading = false)
                 logLoginSuccess(state, "password")
-                onLoginSuccessCallback?.invoke()
+                fireLoginSuccess()
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
@@ -137,7 +159,7 @@ class AuthViewModel @Inject constructor(
                 )
                 _uiState.value = _uiState.value.copy(isLoading = false)
                 logLoginSuccess(state, "access_token")
-                onLoginSuccessCallback?.invoke()
+                fireLoginSuccess()
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
