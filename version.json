@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
-  "release_notes": "• Sign in with a Personal Access Token (PAT) — useful for OIDC/SSO users who don't have a username/password.\n• Login screen now has a Password / Access Token toggle.\n• Pasted tokens with a leading 'Bearer ' prefix are stripped automatically.",
-  "release_notes_zh": "• 支持使用个人访问令牌（PAT）登录 —— 方便没有用户名/密码的 OIDC/SSO 用户。\n• 登录页新增 密码 / 访问令牌 切换。\n• 粘贴的令牌如带有 'Bearer ' 前缀会被自动去除。"
+  "version": "1.1.1",
+  "release_notes": "Hotfix release.\n\n• Share intent: fix cold-start from the system share sheet getting stuck on the login route — the editor now opens reliably once authenticated.\n• Build: restore a clean Kotlin compile by clearing leftover merge-conflict markers in six files.",
+  "release_notes_zh": "Bug 修复版本。\n\n• 分享：修复从系统分享菜单冷启动 App 时停留在登录页的问题，登录后能正常打开编辑器。\n• 构建：清理 6 个文件中遗留的合并冲突标记，恢复 Kotlin 编译。"
 }
