@@ -59,7 +59,6 @@ class MemoEditorViewModel @Inject constructor(
     private val memoId: String = savedStateHandle["memoId"] ?: ""
     private val sharedText: String = savedStateHandle["sharedText"] ?: ""
 
-<<<<<<< HEAD
     private val _uiState = MutableStateFlow(
         MemoEditorUiState(
             isEditMode = memoId.isNotBlank(),
@@ -69,19 +68,6 @@ class MemoEditorViewModel @Inject constructor(
                 TextFieldValue()
             },
         )
-=======
-    private val initialField: TextFieldValue = if (sharedText.isNotEmpty() && memoId.isBlank()) {
-        TextFieldValue(text = sharedText, selection = TextRange(sharedText.length))
-    } else {
-        TextFieldValue()
-    }
-
-    private val _uiState = MutableStateFlow(
-        MemoEditorUiState(
-            isEditMode = memoId.isNotBlank(),
-            textFieldValue = initialField,
-        ),
->>>>>>> origin/night-shift/20260514-share-intent
     )
     val uiState: StateFlow<MemoEditorUiState> = _uiState.asStateFlow()
 
