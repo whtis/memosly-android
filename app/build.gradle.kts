@@ -23,8 +23,8 @@ android {
 
     defaultConfig {
         applicationId = "com.whtis.memosly"
-        versionCode = 4
-        versionName = "1.1.1"
+        versionCode = 5
+        versionName = "1.1.2"
     }
 
     if (keystorePropertiesFile.exists()) {
