@@ -178,7 +178,7 @@ internal fun AuthScreen(
                                             when (version) {
                                                 ServerVersion.V024 -> "v0.24"
                                                 ServerVersion.V025 -> "v0.25"
-                                                ServerVersion.V026 -> "v0.26+"
+                                                ServerVersion.V026 -> "v0.26"
                                             },
                                             style = MaterialTheme.typography.labelSmall,
                                         )

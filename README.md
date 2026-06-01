@@ -50,6 +50,15 @@
 - Sign in with username/password **or** a Personal Access Token (works for
   OIDC/SSO users — generate a PAT from the Memos web UI)
 
+> [!IMPORTANT]
+> **Memos v0.27 and newer are not supported.** Upstream v0.27 introduced
+> breaking API changes (e.g. user resource names switched from `users/{id}`
+> to `users/{username}`, CEL filter semantics tightened, attachment
+> ownership enforcement) that this client does not adapt to. If your
+> server is on v0.27+, memos may not display correctly and attachments
+> may behave unexpectedly. Pin your Memos server to **v0.26.2** for the
+> best experience with this app.
+
 ### Profile & Settings
 - User stats (memo count, tag count)
 - Access token management (view / delete)
