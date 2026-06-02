@@ -1,0 +1,4 @@
+v1.1.1 — Hotfix release.
+
+- Share intent: fix cold-start from the system share sheet leaving the app stuck on the login route. The editor now opens reliably once authenticated.
+- Build: restore a clean Kotlin compile by clearing leftover merge-conflict markers in six files.
