@@ -1,0 +1,4 @@
+v1.1.2 — Documentation release.
+
+- Server compatibility: this client supports Memos server v0.24, v0.25, and v0.26 only. Memos v0.27 and newer ship breaking API changes (e.g. user resource names switched to usernames) that are not adapted here — pin your server to v0.26.2 for best results.
+- Auth screen: the version picker now shows "v0.26" instead of the misleading "v0.26+".

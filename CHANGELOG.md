@@ -5,6 +5,37 @@ All notable changes to Memosly will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2026-06-01
+
+### Changed
+- README explicitly states that Memos server v0.27 and newer are not
+  supported. Upstream v0.27 introduced breaking API changes (e.g. user
+  resource names switched from `users/{id}` to `users/{username}`,
+  CEL filter semantics tightened, attachment ownership enforcement)
+  that this client does not adapt to. Pin your Memos server to
+  **v0.26.2** for the best experience. ([#5])
+- Auth screen version picker no longer shows the misleading `v0.26+`
+  label — it now shows `v0.26` to match the actual compatibility
+  ceiling.
+- Bump `versionCode` to 5 for the documentation release.
+
+## [1.1.1] - 2026-05-31
+
+### Fixed
+- Share intent could leave the app stuck on the auth route after a
+  cold-start from the system share sheet. `AuthViewModel` now buffers a
+  pending login-success signal until `AuthScreen` registers its callback,
+  and `MemosNavHost` observes the back stack via
+  `currentBackStackEntryAsState()` so the editor is reliably pushed on
+  top of home/tabs once authenticated. ([#6])
+- Resolved leftover merge-conflict markers in six files (`MainActivity`,
+  `MemosNavHost`, `AuthInterceptor`, `ServerUrlInterceptor`,
+  `MemoEditorViewModel`, `MemoNavigation`) that had been committed as-is
+  from prior night-shift merges, restoring a clean Kotlin compile.
+
+### Changed
+- Bump `versionCode` to 4 for the hotfix release.
+
 ## [1.1.0] - 2026-02-27
 
 ### Added
@@ -53,7 +84,11 @@ Initial open source release.
 - Compatible with Memos server **v0.24**, **v0.25**, and **v0.26**
   (version-aware API handling, selected at login).
 
+[1.1.2]: https://github.com/whtis/memosly-android/releases/tag/v1.1.2
+[1.1.1]: https://github.com/whtis/memosly-android/releases/tag/v1.1.1
 [1.1.0]: https://github.com/whtis/memosly-android/releases/tag/v1.1.0
 [1.0.1]: https://github.com/whtis/memosly-android/releases/tag/v1.0.1
 [1.0.0]: https://github.com/whtis/memosly-android/releases/tag/v1.0.0
 [#2]: https://github.com/whtis/memosly-android/issues/2
+[#5]: https://github.com/whtis/memosly-android/issues/5
+[#6]: https://github.com/whtis/memosly-android/issues/6

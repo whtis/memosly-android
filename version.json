@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
-  "release_notes": "• Sign in with a Personal Access Token (PAT) — useful for OIDC/SSO users who don't have a username/password.\n• Login screen now has a Password / Access Token toggle.\n• Pasted tokens with a leading 'Bearer ' prefix are stripped automatically.",
-  "release_notes_zh": "• 支持使用个人访问令牌（PAT）登录 —— 方便没有用户名/密码的 OIDC/SSO 用户。\n• 登录页新增 密码 / 访问令牌 切换。\n• 粘贴的令牌如带有 'Bearer ' 前缀会被自动去除。"
+  "version": "1.1.2",
+  "release_notes": "Documentation release.\n\n• Server compatibility: this client supports Memos server v0.24, v0.25, and v0.26 only. Memos v0.27 and newer ship breaking API changes (e.g. user resource names switched to usernames) that are not adapted here — pin your server to v0.26.2 for best results.\n• Auth screen: the version picker now shows 'v0.26' instead of the misleading 'v0.26+'.",
+  "release_notes_zh": "文档发版。\n\n• 服务器兼容性：本客户端仅适配 Memos v0.24、v0.25、v0.26。Memos v0.27 及以上版本上游有破坏性 API 变更（如用户资源名改为 username 形式），本客户端不再适配 —— 建议将服务器固定到 v0.26.2。\n• 登录页：版本选择器从带误导性的 \"v0.26+\" 改为明确的 \"v0.26\"。"
 }
