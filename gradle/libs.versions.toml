@@ -47,6 +47,9 @@ google-services = "4.4.2"
 # Markdown
 commonmark = "0.24.0"
 
+# Testing
+junit = "4.13.2"
+
 [libraries]
 # AndroidX Core
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -116,6 +119,9 @@ firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics
 
 # Coroutines
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+
+# Testing
+junit = { group = "junit", name = "junit", version.ref = "junit" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
