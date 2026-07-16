@@ -1,10 +1,9 @@
-v1.2.0 — Share photos and videos, plus an important image fix.
+v1.2.0 — Share photos and videos, plus an image fix.
 
 New:
-- Share images and videos to Memosly from any app — Memosly now shows up in the share sheet for pictures and video, not just text. Share several at once (up to 9); they upload straight into a new memo.
-- Files over 32 MB are refused up front with a clear message instead of failing mid-upload. This matches the Memos server's own default upload limit.
+- Share images and videos to Memosly from any app, up to 9 at once. They upload straight into a new memo.
+- Files over 32 MB are refused up front instead of failing mid-upload.
 
 Fixed:
-- Images added in the editor never showed up on Memos server v0.25/v0.26. They uploaded fine but were linked to no memo, leaving the file on the server and invisible everywhere. This affected every image added through the editor and has been broken since v1.1.1. If you have images that went missing, re-add them and they will stick.
-- Sharing several files at once could silently drop some of them.
-- A share that arrived while the editor was already open could resurface later and attach itself to an unrelated memo.
+- Images added in the editor never appeared on Memos server v0.25/v0.26 — they uploaded but linked to no memo, leaving the file invisible. Broken since v1.1.1; re-add any that went missing.
+- Sharing several files at once could silently drop some.
