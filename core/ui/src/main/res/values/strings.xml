@@ -145,6 +145,9 @@
     <string name="uploading_media">Uploading…</string>
     <string name="upload_failed">Upload failed</string>
     <string name="remove_attachment">Remove</string>
+    <string name="media_too_large">Skipped %1$s — larger than %2$d MB</string>
+    <string name="media_unreadable">Couldn\'t read %1$s</string>
+    <string name="media_too_many">Only the first %1$d files were added</string>
 
     <!-- Media Viewer -->
     <string name="download">Download</string>
