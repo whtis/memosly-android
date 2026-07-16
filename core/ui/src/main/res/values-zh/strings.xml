@@ -28,6 +28,9 @@
     <string name="sign_out">退出登录</string>
     <string name="all_fields_required">所有字段为必填项</string>
     <string name="sign_in_failed">登录失败</string>
+    <string name="access_token_label">访问令牌</string>
+    <string name="use_access_token">使用访问令牌</string>
+    <string name="use_password">使用密码</string>
     <string name="not_authenticated">未登录</string>
     <string name="server_version">服务器版本</string>
 
