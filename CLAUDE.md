@@ -87,9 +87,13 @@ ContentResolver.getType(uri)
 - 删除附件时同时从 `existingResources` 和 `pendingResources` 中移除
 
 ### Markdown 语法区分
-- **图片**：`![filename](url)` — 嵌入 markdown，内联渲染
+- **图片**：**不嵌入 markdown** — 仅通过 SetMemoResources API 关联，附件系统显示
 - **视频**：不嵌入 markdown — 仅通过 SetMemoResources API 关联，附件系统显示
 - **文件**：`[filename](url)` — 可点击链接
+
+**图片曾经嵌入 markdown，2026-05-07 (c463cd2) 起不再嵌入**：同时嵌入又关联会让 web 端显示两次（issue #5）。
+现在附件列表是图片显示的唯一来源 —— 上传的图片**必须**出现在 setMemoResources 调用里，漏掉就会变成孤儿资源，
+传上去了但任何端都看不到。
 
 ### MemoCard 溢出菜单
 - 三点 MoreVert 图标 + DropdownMenu，包含编辑/归档/删除操作
