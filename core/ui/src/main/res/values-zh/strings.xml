@@ -141,6 +141,9 @@
     <string name="uploading_media">上传中…</string>
     <string name="upload_failed">上传失败</string>
     <string name="remove_attachment">移除</string>
+    <string name="media_too_large">已跳过 %1$s — 超过 %2$d MB</string>
+    <string name="media_unreadable">无法读取 %1$s</string>
+    <string name="media_too_many">仅添加了前 %1$d 个文件</string>
 
     <!-- Media Viewer -->
     <string name="download">下载</string>

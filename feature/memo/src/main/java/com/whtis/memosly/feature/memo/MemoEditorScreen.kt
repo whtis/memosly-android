@@ -57,7 +57,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -80,7 +79,6 @@ internal fun MemoEditorScreen(
     viewModel: MemoEditorViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
     val serverUrl = viewModel.serverUrl
 
     // Media picker launcher
@@ -88,29 +86,7 @@ internal fun MemoEditorScreen(
         contract = ActivityResultContracts.GetContent(),
     ) { uri: Uri? ->
         uri ?: return@rememberLauncherForActivityResult
-        val contentResolver = context.contentResolver
-        val filename = run {
-            val cursor = contentResolver.query(uri, null, null, null, null)
-            cursor?.use {
-                val nameIndex = it.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
-                if (it.moveToFirst() && nameIndex >= 0) it.getString(nameIndex) else null
-            } ?: "file_${System.currentTimeMillis()}"
-        }
-        val bytes = contentResolver.openInputStream(uri)?.use { it.readBytes() } ?: return@rememberLauncherForActivityResult
-        val rawMimeType = contentResolver.getType(uri)
-        val mimeType = rawMimeType?.takeIf { it != "application/octet-stream" }
-            ?: android.webkit.MimeTypeMap.getSingleton()
-                .getMimeTypeFromExtension(filename.substringAfterLast('.', "").lowercase())
-            ?: guessMimeTypeFromBytes(bytes)
-            ?: rawMimeType
-            ?: "application/octet-stream"
-        // Ensure filename has an extension so renderers can detect media type from the URL
-        val filenameWithExt = if (!filename.contains('.')) {
-            val ext = android.webkit.MimeTypeMap.getSingleton()
-                .getExtensionFromMimeType(mimeType)
-            if (ext != null) "$filename.$ext" else filename
-        } else filename
-        viewModel.uploadMedia(filenameWithExt, mimeType, bytes)
+        viewModel.enqueueMedia(listOf(uri))
     }
 
     if (uiState.isLoading) {
@@ -431,19 +407,3 @@ private fun AttachmentPreviewStrip(
     }
 }
 
-private fun guessMimeTypeFromBytes(bytes: ByteArray): String? {
-    if (bytes.size < 12) return null
-    // JPEG: FF D8 FF
-    if (bytes[0] == 0xFF.toByte() && bytes[1] == 0xD8.toByte() && bytes[2] == 0xFF.toByte()) return "image/jpeg"
-    // PNG: 89 50 4E 47
-    if (bytes[0] == 0x89.toByte() && bytes[1] == 0x50.toByte() && bytes[2] == 0x4E.toByte() && bytes[3] == 0x47.toByte()) return "image/png"
-    // GIF: GIF8
-    if (bytes[0] == 0x47.toByte() && bytes[1] == 0x49.toByte() && bytes[2] == 0x46.toByte() && bytes[3] == 0x38.toByte()) return "image/gif"
-    // WEBP: RIFF....WEBP
-    if (bytes[0] == 0x52.toByte() && bytes[1] == 0x49.toByte() && bytes[2] == 0x46.toByte() && bytes[3] == 0x46.toByte()
-        && bytes[8] == 0x57.toByte() && bytes[9] == 0x45.toByte() && bytes[10] == 0x42.toByte() && bytes[11] == 0x50.toByte()
-    ) return "image/webp"
-    // MP4/MOV/3GP: ftyp at offset 4
-    if (bytes[4] == 0x66.toByte() && bytes[5] == 0x74.toByte() && bytes[6] == 0x79.toByte() && bytes[7] == 0x70.toByte()) return "video/mp4"
-    return null
-}

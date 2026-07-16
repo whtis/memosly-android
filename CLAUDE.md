@@ -37,6 +37,19 @@ App 必须同时兼容 Memos server v0.24、v0.25、v0.26。
 - 服务端期望 JSON `{filename, type, content}`，content 是 base64
 - 不是 multipart form data（gRPC-gateway 把 protobuf bytes 映射为 base64 JSON）
 - v0.24 和 v0.26 格式相同，仅端点不同
+- **全内存编码**：bytes → base64 字符串 → JSON，峰值堆约为文件大小的 3-4 倍，且未开 `largeHeap`。
+  上传前必须按 `MAX_UPLOAD_BYTES`（32MB，对齐服务端 `MEMOS_MAX_UPLOAD_SIZE_MIB` 默认值）拦截，
+  且要在读字节**之前**用 `OpenableColumns.SIZE` 判断 —— 读进来再判断就已经 OOM 了
+- 多文件必须**串行**上传（`MemoEditorViewModel.uploadMutex`），并发会同时爆内存和状态
+
+### 系统分享接入
+- Manifest 注册两组 filter：`SEND` + `text/plain`（文本），`SEND`/`SEND_MULTIPLE` + `image/*`/`video/*`（媒体）
+- 文本走导航参数；媒体的 Uri 走 `SharedMediaBuffer`（Hilt singleton）—— 可能多个、可能很长，
+  且读权限属于接收 Activity，塞不进路由字符串
+- **分享是文本或媒体，二选一**：媒体分享忽略发送方附带的 EXTRA_TEXT
+- **待处理的分享必须无条件消费**：编辑器已开着时会跳过导航保住草稿，但如果不消费 flag，
+  它会在路由一变时重新触发，把早就过期的分享塞进用户刚打开的东西里
+- 未登录时分享会挂起，登录后自动续上（`LaunchedEffect` 在 `AUTH_ROUTE` 上不消费）
 
 ### 发文/编辑后刷新
 - 编辑器保存时：`previousBackStackEntry.savedStateHandle.set("memo_saved", true)`

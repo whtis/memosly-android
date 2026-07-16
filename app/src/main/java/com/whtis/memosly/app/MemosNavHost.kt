@@ -36,6 +36,8 @@ fun MemosNavHost(
     sessionPreferences: SessionPreferences,
     sharedText: String? = null,
     onSharedTextConsumed: () -> Unit = {},
+    hasSharedMedia: Boolean = false,
+    onSharedMediaConsumed: () -> Unit = {},
 ) {
     val navController = rememberNavController()
     val navMode by sessionPreferences.navModeFlow.collectAsStateWithLifecycle()
@@ -66,12 +68,27 @@ fun MemosNavHost(
     // After auth completes, if a share intent is pending, push the editor on top
     // of the home/tabs route. Consume the shared text so this doesn't re-fire
     // across configuration changes or recompositions.
+    // An editor that is already open keeps its draft, so the share doesn't push a second one.
+    // It still has to be consumed: leaving it pending would re-fire the moment the route
+    // changes, dropping a long-abandoned share into whatever the user opened next.
     LaunchedEffect(sharedText, currentRoute) {
         val text = sharedText?.takeIf { it.isNotBlank() } ?: return@LaunchedEffect
         if (currentRoute == null || currentRoute == AUTH_ROUTE) return@LaunchedEffect
-        if (currentRoute.startsWith("memo/editor")) return@LaunchedEffect
-        navController.navigateToMemoEditor(sharedText = text)
+        if (!currentRoute.startsWith("memo/editor")) {
+            navController.navigateToMemoEditor(sharedText = text)
+        }
         onSharedTextConsumed()
+    }
+
+    // Same deal for a media share; the URIs themselves wait in SharedMediaBuffer and the
+    // editor's ViewModel drains them once it starts.
+    LaunchedEffect(hasSharedMedia, currentRoute) {
+        if (!hasSharedMedia) return@LaunchedEffect
+        if (currentRoute == null || currentRoute == AUTH_ROUTE) return@LaunchedEffect
+        if (!currentRoute.startsWith("memo/editor")) {
+            navController.navigateToMemoEditor(sharedMedia = true)
+        }
+        onSharedMediaConsumed()
     }
 
     NavHost(
