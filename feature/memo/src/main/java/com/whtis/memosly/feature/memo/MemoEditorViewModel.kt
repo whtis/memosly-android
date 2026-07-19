@@ -71,7 +71,11 @@ class MemoEditorViewModel @Inject constructor(
 
     val serverUrl: String get() = tokenManager.serverUrl.value ?: ""
 
-    private val memoId: String = savedStateHandle["memoId"] ?: ""
+    /**
+     * Blank for a new memo. Once a create succeeds this holds the new id, so a retry after a
+     * failed attachment link updates that memo instead of creating a second one.
+     */
+    private var memoId: String = savedStateHandle["memoId"] ?: ""
     private val sharedText: String = savedStateHandle["sharedText"] ?: ""
     private val hasSharedMedia: Boolean = savedStateHandle["sharedMedia"] ?: false
 
@@ -236,10 +240,12 @@ class MemoEditorViewModel @Inject constructor(
             _uiState.value = _uiState.value.copy(isSaving = true, error = null)
             try {
                 val visibilityStr = _uiState.value.visibility.name
-                val memo = if (memoId.isNotBlank()) {
+                val isUpdate = memoId.isNotBlank()
+                val memo = if (isUpdate) {
                     memoRepository.updateMemo(memoId, content, visibilityStr)
                 } else {
                     memoRepository.createMemo(content, visibilityStr).also {
+                        memoId = it.name.substringAfterLast("/")
                         analyticsHelper.logEvent("memo_create", mapOf(
                             "has_tags" to if (content.extractTags().isNotEmpty()) "true" else "false",
                         ))
@@ -254,7 +260,7 @@ class MemoEditorViewModel @Inject constructor(
                 // them now just orphans them.
                 val pendingResources = _uiState.value.pendingResources
                 val existingResources = _uiState.value.existingResources
-                val existingChanged = memoId.isNotBlank() && existingResources.size != memo.resources.size
+                val existingChanged = isUpdate && existingResources.size != memo.resources.size
                 if (pendingResources.isNotEmpty() || existingChanged) {
                     try {
                         val existingNames = existingResources.map { it.name }
@@ -262,7 +268,19 @@ class MemoEditorViewModel @Inject constructor(
                         val allNames = (existingNames + newNames).distinct()
                         memoRepository.setMemoResources(memo.name, allNames)
                     } catch (e: Exception) {
+                        // Swallowing this is what let the v0.24 verb bug ship: the memo saved,
+                        // the upload vanished, and nothing said so. The memo exists either way,
+                        // so stay in the editor and let the user retry — memoId now points at
+                        // it, so retrying updates rather than posting a duplicate.
                         android.util.Log.e("MemoEditor", "setMemoResources failed: ${e.message}", e)
+                        _uiState.update {
+                            it.copy(
+                                isSaving = false,
+                                isEditMode = true,
+                                error = context.getString(UiR.string.attachment_link_failed),
+                            )
+                        }
+                        return@launch
                     }
                 }
 

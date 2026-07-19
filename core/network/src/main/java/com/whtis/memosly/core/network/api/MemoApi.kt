@@ -79,8 +79,9 @@ interface MemoApi {
         @Body request: SetMemoRelationsRequest,
     )
 
-    // v0.24: link resources to memo
-    @POST("api/v1/memos/{id}/resources")
+    // v0.24: link resources to memo. PATCH, not POST — the proto binds this to
+    // `patch: "/api/v1/{name=memos/*}/resources"`, and POST answers 501.
+    @PATCH("api/v1/memos/{id}/resources")
     suspend fun setMemoResources(
         @Path("id") id: String,
         @Body request: SetMemoResourcesRequest,

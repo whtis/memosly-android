@@ -148,6 +148,7 @@
     <string name="media_too_large">Skipped %1$s — larger than %2$d MB</string>
     <string name="media_unreadable">Couldn\'t read %1$s</string>
     <string name="media_too_many">Only the first %1$d files were added</string>
+    <string name="attachment_link_failed">The memo was saved, but its attachments could not be linked. Tap save to retry.</string>
 
     <!-- Media Viewer -->
     <string name="download">Download</string>
