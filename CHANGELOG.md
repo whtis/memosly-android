@@ -5,6 +5,25 @@ All notable changes to Memosly will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2026-07-19
+
+### Fixed
+- **Attachments were never linked to a memo on Memos server v0.24.** The
+  upload itself succeeded, but the call that attaches it to the memo went
+  out as `POST` where v0.24 binds `SetMemoResources` to `PATCH`, and the
+  server answered `501 Method Not Allowed`. The file was left on the
+  server as an unused resource, visible in no client. Images broke in
+  v1.1.1, when they stopped being embedded in the memo text ([#5]) — the
+  embed had been hiding this. Videos and other files were never embedded,
+  so on v0.24 they had never worked. v0.25 and v0.26 use the attachments
+  endpoint, which the app already patched, and were unaffected. ([#13])
+- A failure to link attachments was caught, logged, and otherwise
+  ignored, so a save that lost its attachments was indistinguishable from
+  one that worked — which is why the above went unnoticed for so long.
+  The error now surfaces and the editor stays open; the memo is already
+  created at that point, so retrying updates it rather than posting a
+  duplicate.
+
 ## [1.2.0] - 2026-07-16
 
 ### Added
@@ -111,6 +130,7 @@ Initial open source release.
 - Compatible with Memos server **v0.24**, **v0.25**, and **v0.26**
   (version-aware API handling, selected at login).
 
+[1.2.1]: https://github.com/whtis/memosly-android/releases/tag/v1.2.1
 [1.2.0]: https://github.com/whtis/memosly-android/releases/tag/v1.2.0
 [1.1.2]: https://github.com/whtis/memosly-android/releases/tag/v1.1.2
 [1.1.1]: https://github.com/whtis/memosly-android/releases/tag/v1.1.1
@@ -121,3 +141,4 @@ Initial open source release.
 [#5]: https://github.com/whtis/memosly-android/issues/5
 [#6]: https://github.com/whtis/memosly-android/issues/6
 [#10]: https://github.com/whtis/memosly-android/issues/10
+[#13]: https://github.com/whtis/memosly-android/pull/13

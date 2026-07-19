@@ -1,0 +1,7 @@
+v1.2.1 — Fixes attachments on Memos server v0.24.
+
+Fixed:
+- Images, videos and files added to a memo were never linked on v0.24 servers. They uploaded but attached to nothing, sitting on the server as unused resources and showing up nowhere. Images broke in v1.1.1; video and file attachments never worked on v0.24.
+- When linking an attachment fails, the app now says so and keeps the editor open, instead of quietly saving a memo without it.
+
+Memos server v0.25 and v0.26 were unaffected.
