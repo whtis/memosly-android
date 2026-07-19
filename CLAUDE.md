@@ -20,6 +20,10 @@ App 必须同时兼容 Memos server v0.24、v0.25、v0.26。
 | 访问令牌 | `access_tokens` | `personalAccessTokens` |
 | MemoRelation | string/numeric | object/string enum |
 | 枚举序列化 | 数字 (1,2,3) | 字符串 ("NORMAL","ARCHIVED") |
+| 关联附件 | v0.24: `PATCH memos/{id}/resources`<br>v0.25: `PATCH memos/{id}/attachments` | `PATCH memos/{id}/attachments` |
+
+**关联附件一律是 PATCH，不是 POST** —— proto 里绑的是 `patch:`，发 POST 会得到
+`501 Method Not Allowed`。这个错在 v0.24 上藏了很久（详见下方 2026-07-19 修复记录）。
 
 ## 架构与技术栈
 - **构建**: build-logic convention plugins (Application, Library, Compose, Hilt, Feature)
@@ -139,6 +143,21 @@ ContentResolver.getType(uri)
 2. restoreSession 错误处理（仅 401/403 清除 token，网络错误保持）
 3. 编辑器附件预览修复（用 memo.resources 替代 markdown 正则解析）
 4. MemoCard 三点溢出菜单（编辑/归档/删除，9 个文件联动）
+
+### 2026-07-19 修复（v1.2.1，PR #13）
+**v0.24 附件从来没有被关联上**：`setMemoResources` 用了 `@POST`，v0.24 的 proto 绑的是
+`patch:`，服务端一律回 `501 Method Not Allowed`。上传本身是成功的，所以文件躺在服务端
+成了 unused resource，任何客户端都看不到。0.24.0 / 0.24.2 / 0.24.3 实测行为一致。
+
+- **图片是从 v1.1.1 开始坏的**，不是一开始就坏：在 c463cd2 去掉 markdown 嵌入之前，
+  图片同时被嵌进正文，即使关联失败也能显示 —— 嵌入是遮羞布。视频和文件从不嵌入，
+  所以它们在 v0.24 上**从来没工作过**。
+- **两个"正确的修复"互相抵消的第二例**（第一例见 issue #5 的孤儿图片）。判断某个
+  功能"以前能用"时，先确认它是靠什么机制显示的。
+- 关联失败原来是 `catch { Log.e }` 吞掉的，保存看起来完全成功 —— 这才是它能藏这么久的
+  根本原因。现在会报错并留在编辑器；memo 此时已创建，所以 `memoId` 会被记下，重试走更新
+  而不是再发一条。
+- 回归测试：`MemoApiAttachmentEndpointTest`（MockWebServer 钉住 method + path + body）。
 
 ### 已知未解决问题
 - **v0.26 归档内容不可见**：归档标签页在 v0.24 正常，v0.26 看不到。可能与 v0.26 ListMemos API 的 state 过滤参数变化有关，需进一步调查。
