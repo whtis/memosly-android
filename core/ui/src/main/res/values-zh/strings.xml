@@ -147,6 +147,7 @@
     <string name="media_too_large">已跳过 %1$s — 超过 %2$d MB</string>
     <string name="media_unreadable">无法读取 %1$s</string>
     <string name="media_too_many">仅添加了前 %1$d 个文件</string>
+    <string name="attachment_link_failed">备忘已保存，但附件关联失败。点击保存可重试。</string>
 
     <!-- Media Viewer -->
     <string name="download">下载</string>
